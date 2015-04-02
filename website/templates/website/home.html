@@ -1,0 +1,56 @@
+{% extends 'website/_base.html' %}
+
+{% block page_title %}Menu overview{% endblock %}
+
+{% block content %}
+
+	{% for day in days %}
+	<div class="lunch-day">
+		<div class="row">
+			<div class="col-xs-12">
+				<h3 class="lunch-day__title">
+					{{ day.name }} - {{ day.date }}
+				</h3>
+			</div>
+
+			<div class="col-xs-12">
+				{% for item in day.fooditem_set.all %}
+				<div class="lunch-day-item">
+					<div class="row">
+						<div class="col-xs-12">
+							<span class="lunch-day-item__category text-muted">
+								{{ item.type }}
+							</span>
+						</div>
+						<div class="col-xs-9">
+							<h4 class="lunch-day-item__name">
+								{{ item.name }}
+							</h4>
+						</div>
+						<div class="col-xs-3">
+							<h4 class="lunch-day-item__price">
+								&euro;{{ item.small_price }}<br/>
+								&euro;{{ item.large_price }}
+							</h4>
+						</div>
+						<div class="col-xs-6"></div>
+						<div class="col-xs-6">
+							<div class="lunch-day-item__vote-wrap">
+								<span class="lunch-day-item__vote-count" data-clicked="0">
+									{{ item.votes }}
+								</span>
+								<button class="lunch-day-item__vote-button glyphicon glyphicon-thumbs-up"
+								        data-id="{{ item.id }}"
+								        data-clicked="0">
+								 </button>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+{% endblock %}
