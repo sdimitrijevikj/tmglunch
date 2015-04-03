@@ -1,22 +1,13 @@
 from django.db import models
 
 
-class Day(models.Model):
-
-    date = models.DateField()
-    name = models.CharField(max_length=16)
-
-    def __unicode__(self):
-        return self.name
-
-
 class FoodItem(models.Model):
 
-    day = models.ForeignKey(Day)
+    date = models.DateField()
     name = models.CharField(max_length=128)
     type = models.CharField(max_length=128)
-    small_price = models.IntegerField()
-    large_price = models.IntegerField()
+    small_price = models.FloatField()
+    large_price = models.FloatField()
     votes = models.IntegerField()
 
     def __unicode__(self):
@@ -33,3 +24,11 @@ class Feedback(models.Model):
     def __unicode__(self):
         return self.date
 
+
+class MenuDocs(models.Model):
+
+    date_from = models.DateField()
+    file = models.FileField(upload_to='menu')
+
+    def __unicode__(self):
+        return self.date_from

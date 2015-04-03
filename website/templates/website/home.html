@@ -9,12 +9,12 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h3 class="lunch-day__title">
-					{{ day.name }} - {{ day.date }}
+					{{ day.0 | date:"l" }} - {{ day.0 | date:"N d" }}
 				</h3>
 			</div>
 
 			<div class="col-xs-12">
-				{% for item in day.fooditem_set.all %}
+				{% for item in day.1 %}
 				<div class="lunch-day-item">
 					<div class="row">
 						<div class="col-xs-12">
@@ -29,8 +29,13 @@
 						</div>
 						<div class="col-xs-3">
 							<h4 class="lunch-day-item__price">
-								&euro;{{ item.small_price }}<br/>
-								&euro;{{ item.large_price }}
+								{% if item.small_price %}
+									&euro;{{ item.small_price }}<br/>
+								{% endif %}
+
+								{% if item.large_price %}
+									&euro;{{ item.large_price }}
+								{% endif %}
 							</h4>
 						</div>
 						<div class="col-xs-6"></div>
