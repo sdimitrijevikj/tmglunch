@@ -74,9 +74,15 @@ def parse_lunch_menu_data(file_path, from_date):
         for index, cell in enumerate(row):
 
             if index == 0:
-                food_obj['type'] = str(cell.value)
+                if type(cell.value) is unicode:
+                    food_obj['type'] = unicodedata.normalize('NFKD', cell.value).encode('ascii', 'ignore')
+                else:
+                    food_obj['type'] = cell.value
             elif index % 2 != 0 and index != 0:
-                food_obj['name'] = str(cell.value)
+                if type(cell.value) is unicode:
+                    food_obj['name'] = unicodedata.normalize('NFKD', cell.value).encode('ascii', 'ignore')
+                else:
+                    food_obj['name'] = cell.value
             elif index % 2 == 0:
 
                 price_clean = handle_price_value(cell.value)

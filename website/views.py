@@ -39,5 +39,5 @@ def vote(request):
 
 @login_required(redirect_field_name='/')
 def upload_data(request):
-    #parse_lunch_menu_data('website/docs/menu.xlsx', '2015/4/3')
+    #parse_lunch_menu_data('website/docs/menu.xls', '2015/4/6')
     return render(request, 'website/load.html', {})
