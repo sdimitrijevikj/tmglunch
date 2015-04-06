@@ -25,7 +25,11 @@ SECRET_KEY = '2t_xxdd-l^*7o1##%#k9m5khk-+dodphs^4212wnnrkju0a+k('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['srzz.pythonanywhere.com']
+ALLOWED_HOSTS = [
+    'srzz.pythonanywhere.com',
+    'tmglunch.pythonanywhere.com',
+    'lunch.tmg.nl',
+]
 
 
 # Application definition
