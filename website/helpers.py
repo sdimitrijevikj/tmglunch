@@ -86,8 +86,9 @@ def parse_lunch_menu_data(file_path, from_date):
             elif index % 2 == 0:
 
                 price_clean = handle_price_value(cell.value)
-                food_item = FoodItem(date=days[week_counter], type=food_obj['type'], name=food_obj['name'],
-                                     small_price=price_clean['small_price'], large_price=price_clean['large_price'],
-                                     votes=0)
-                food_item.save()
+                if food_obj['name'] != '':
+                    food_item = FoodItem(date=days[week_counter], type=food_obj['type'], name=food_obj['name'],
+                                         small_price=price_clean['small_price'], large_price=price_clean['large_price'],
+                                         votes=0)
+                    food_item.save()
                 week_counter += 1
