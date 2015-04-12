@@ -12,11 +12,7 @@ from .helpers import parse_lunch_menu_data
 def index(request):
     days = []
     today = datetime.now()
-    print today.isoweekday()
-    if today.isoweekday() < 4:
-        number_days = 5
-    else:
-        number_days = 7
+    number_days = 7
 
     for x in range(0, number_days):
         day = datetime(today.year, today.month, today.day + x, 0, 0, 0)
@@ -39,5 +35,5 @@ def vote(request):
 
 @login_required(redirect_field_name='/')
 def upload_data(request):
-    parse_lunch_menu_data('website/docs/menu16.xls', '2015/4/13')
+    #parse_lunch_menu_data('website/docs/menu16.xls', '2015/4/13')
     return render(request, 'website/load.html', {})
