@@ -11,7 +11,7 @@ class FoodItem(models.Model):
     votes = models.IntegerField()
 
     def __unicode__(self):
-        return self.name
+        return self.name + '|' + str(self.date)
 
 
 class Feedback(models.Model):
