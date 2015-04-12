@@ -11,20 +11,12 @@ from website.models import FoodItem
 # Create the correct datetime objects
 def create_week_days(from_date):
     days = []
-    start_date = datetime.strptime(from_date, '%Y/%m/%d')
+    start_date = datetime.strptime(from_date, '%Y-%m-%d')
 
     for x in range(0, 5):
         days.append(datetime(start_date.year, start_date.month, start_date.day+x, 0, 0, 0))
 
     return days
-
-
-# Convert the string to a float number with correct punctuation
-def convert_to_float(number):
-    try:
-        return float(number.replace(',', '.'))
-    except:
-        return 0
 
 
 # Price values are a mess... so we need to check and clean them up a bit
@@ -33,13 +25,27 @@ def handle_price_value(price):
 
     if type(price) is unicode:
         cell_clean = unicodedata.normalize('NFKD', price).encode('ascii', 'ignore').split()
-        price_obj['small_price'] = convert_to_float(cell_clean[0])
-        price_obj['large_price'] = convert_to_float(cell_clean[1])
+        try:
+            price_obj['small_price'] = float(cell_clean[0].replace(',', '.'))
+        except:
+            price_obj['small_price'] = 0
+
+        try:
+            price_obj['large_price'] = float(cell_clean[1].replace(',', '.'))
+        except:
+            price_obj['large_price'] = 0
 
     elif type(price) is str:
         cell_clean = price.split()
-        price_obj['small_price'] = convert_to_float(cell_clean[0])
-        price_obj['large_price'] = convert_to_float(cell_clean[1])
+        try:
+            price_obj['small_price'] = float(cell_clean[0].replace(',', '.'))
+        except:
+            price_obj['small_price'] = 0
+
+        try:
+            price_obj['large_price'] = float(cell_clean[1].replace(',', '.'))
+        except:
+            price_obj['large_price'] = 0
 
     else:
         price_obj['small_price'] = price

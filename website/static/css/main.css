@@ -79,3 +79,7 @@ input[type=file] {
     margin-bottom: 10px;
     padding: 5px;
 }
+
+.notification-message {
+    padding: 5px;
+}

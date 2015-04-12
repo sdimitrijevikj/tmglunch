@@ -31,4 +31,4 @@ class MenuDocs(models.Model):
     file = models.FileField(upload_to='menu')
 
     def __unicode__(self):
-        return self.date_from
+        return str(self.date_from)
