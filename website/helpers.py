@@ -19,41 +19,41 @@ def create_week_days(from_date):
     return days
 
 
+# Convert the string to a float number with correct punctuation
+def convert_to_float(number):
+    try:
+        return float(number.replace(',', '.'))
+    except:
+        return 0
+
+
 # Price values are a mess... so we need to check and clean them up a bit
 def handle_price_value(price):
     price_obj = {}
 
     if type(price) is unicode:
         cell_clean = unicodedata.normalize('NFKD', price).encode('ascii', 'ignore').split()
-
-        try:
-            price_obj['small_price'] = float(cell_clean[1].replace(',', '.'))
-        except:
-            price_obj['small_price'] = 0
-
-        try:
-            price_obj['large_price'] = float(cell_clean[0].replace(',', '.'))
-        except:
-            price_obj['large_price'] = 0
+        price_obj['small_price'] = convert_to_float(cell_clean[0])
+        price_obj['large_price'] = convert_to_float(cell_clean[1])
 
     elif type(price) is str:
         cell_clean = price.split()
-
-        try:
-            price_obj['small_price'] = float(cell_clean[1].replace(',', '.'))
-        except:
-            price_obj['small_price'] = 0
-
-        try:
-            price_obj['large_price'] = float(cell_clean[0].replace(',', '.'))
-        except:
-            price_obj['large_price'] = 0
+        price_obj['small_price'] = convert_to_float(cell_clean[0])
+        price_obj['large_price'] = convert_to_float(cell_clean[1])
 
     else:
         price_obj['small_price'] = price
         price_obj['large_price'] = 0
 
     return price_obj
+
+
+# Normalize unicode data
+def normalize_unicode(data):
+    if type(data) is unicode:
+        return unicodedata.normalize('NFKD', data).encode('ascii', 'ignore')
+    else:
+        return data
 
 
 # Parse the excel sheet and save the data to the database
@@ -74,15 +74,14 @@ def parse_lunch_menu_data(file_path, from_date):
         for index, cell in enumerate(row):
 
             if index == 0:
-                if type(cell.value) is unicode:
-                    food_obj['type'] = unicodedata.normalize('NFKD', cell.value).encode('ascii', 'ignore')
-                else:
-                    food_obj['type'] = cell.value
+                food_obj['type'] = normalize_unicode(cell.value)
+
+                # Skip this row since it is probably empty
+                if food_obj['type'] == '':
+                    break
+
             elif index % 2 != 0 and index != 0:
-                if type(cell.value) is unicode:
-                    food_obj['name'] = unicodedata.normalize('NFKD', cell.value).encode('ascii', 'ignore')
-                else:
-                    food_obj['name'] = cell.value
+                food_obj['name'] = normalize_unicode(cell.value)
             elif index % 2 == 0:
 
                 price_clean = handle_price_value(cell.value)
