@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -16,7 +16,7 @@ def index(request):
     number_days = 7
 
     for x in range(0, number_days):
-        day = datetime(today.year, today.month, today.day + x, 0, 0, 0)
+        day = today + timedelta(days=x)
         if day.isoweekday() < 6:
             days.append([day, FoodItem.objects.filter(date=day)])
 
@@ -47,13 +47,13 @@ def upload_data(request):
         except Exception as e:
             raise e
 
-        try:
-            parse_lunch_menu_data('website/docs/' + document.file.name, document.date_from)
-            message['text'] = 'Menu items uploaded successfully!'
-            message['type'] = 'success'
-        except:
-            message['text'] = 'There was an error uploading the data, please fix the excel sheet and try again.'
-            message['type'] = 'error'
+        parse_lunch_menu_data('website/docs/' + document.file.name, document.date_from)
+        '''
+        message['text'] = 'Menu items uploaded successfully!'
+        message['type'] = 'success'
+        message['text'] = 'There was an error uploading the data, please fix the excel sheet and try again.'
+        message['type'] = 'error'
+        '''
 
     return render(request, 'website/load.html', {'message': message})
 

@@ -2,7 +2,7 @@ import os
 import xlrd
 import unicodedata
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from tmglunch.settings import BASE_DIR
 from website.models import FoodItem
@@ -14,7 +14,7 @@ def create_week_days(from_date):
     start_date = datetime.strptime(from_date, '%Y-%m-%d')
 
     for x in range(0, 5):
-        days.append(datetime(start_date.year, start_date.month, start_date.day+x, 0, 0, 0))
+        days.append(start_date + timedelta(days=x))
 
     return days
 
