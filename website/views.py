@@ -47,13 +47,13 @@ def upload_data(request):
         except Exception as e:
             raise e
 
-        parse_lunch_menu_data('website/docs/' + document.file.name, document.date_from)
-        '''
-        message['text'] = 'Menu items uploaded successfully!'
-        message['type'] = 'success'
-        message['text'] = 'There was an error uploading the data, please fix the excel sheet and try again.'
-        message['type'] = 'error'
-        '''
+        try:
+            parse_lunch_menu_data('website/docs/' + document.file.name, document.date_from)
+            message['text'] = 'Menu items uploaded successfully!'
+            message['type'] = 'success'
+        except:
+            message['text'] = 'There was an error uploading the data, please fix the excel sheet and try again.'
+            message['type'] = 'error'
 
     return render(request, 'website/load.html', {'message': message})
 
