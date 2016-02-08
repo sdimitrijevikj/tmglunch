@@ -8,8 +8,11 @@ from tmglunch.settings import BASE_DIR
 from website.models import FoodItem
 
 
-# Create the correct datetime objects
 def create_week_days(from_date):
+    """
+    Create the correct datetime objects
+    """
+
     days = []
     start_date = datetime.strptime(from_date, '%Y-%m-%d')
 
@@ -19,8 +22,11 @@ def create_week_days(from_date):
     return days
 
 
-# Price values are a mess... so we need to check and clean them up a bit
 def handle_price_value(price):
+    """
+    Price values are a mess... so we need to check and clean them up a bit
+    """
+
     price_obj = {}
 
     if type(price) is unicode:
@@ -54,18 +60,28 @@ def handle_price_value(price):
     return price_obj
 
 
-# Normalize unicode data
 def normalize_unicode(data):
+    """
+    Normalize unicode data
+    """
+
     if type(data) is unicode:
         return unicodedata.normalize('NFKD', data).encode('ascii', 'ignore')
     else:
         return data
 
 
-# Parse the excel sheet and save the data to the database
 def parse_lunch_menu_data(file_path, from_date):
+    """
+    Parse the excel sheet and save the data to the database
+    """
 
     days = create_week_days(from_date)
+
+    # remove previous items if there were any
+    start_date = datetime.strptime(from_date, '%Y-%m-%d')
+    FoodItem.objects.filter(date__range=[start_date, start_date + timedelta(days=5)]).delete()
+
     workbook = xlrd.open_workbook(os.path.join(BASE_DIR, file_path))
     worksheet = workbook.sheet_by_name('week')
     rows = worksheet.nrows
@@ -97,3 +113,4 @@ def parse_lunch_menu_data(file_path, from_date):
                                          votes=0)
                     food_item.save()
                 week_counter += 1
+
